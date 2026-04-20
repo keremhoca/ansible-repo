@@ -1,6 +1,11 @@
 - name: vm info gathering
   hosts: all
+  vars:
+     ansible_python_interpreter: /usr/bin/python3.9
+
   tasks:
+
+  
     
     - name: Gather info from standalone ESXi server having datacenter as 'ha-datacenter
       community.vmware.vmware_guest_info:
