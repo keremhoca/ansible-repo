@@ -9,5 +9,6 @@
          password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
          datacenter: Konsalt-MESA
          validate_certs: false
+         name: kerem
       delegate_to: localhost
       register: info
