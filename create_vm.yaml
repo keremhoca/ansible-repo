@@ -20,4 +20,8 @@
         - name: VM Network
           ip: 192.168.0.99
           netmask: 255.255.0.0
+          gateway: 192.168.0.1
+          dns_servers:
+            - 8.8.8.8
+            
         state: poweredon
