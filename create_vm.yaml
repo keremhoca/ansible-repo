@@ -3,11 +3,11 @@
   gather_facts: no
 
   collections:
-    - vmware.vmware
+     - community.vmware
 
   tasks:
     - name: Clone VM from template
-      vmware.vmware.vm:
+      community.vmware.vmware_guest:
         name: kerem-test-vm
         template: kerem   
 
