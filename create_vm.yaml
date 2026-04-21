@@ -1,5 +1,9 @@
 - name: Create VM from template
   hosts: all
+
+  vars:
+     ansible_python_interpreter: /usr/bin/python3.9
+
   gather_facts: no
   tasks:
     - name: Clone VM from template
