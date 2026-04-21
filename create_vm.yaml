@@ -17,5 +17,7 @@
         username: '{{ lookup("env", "VMWARE_USER") }}'   
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         networks:
-          - network: "VM Network"
+        - name: VM Network
+          ip: 192.168.0.99
+          netmask: 255.255.0.0
         state: poweredon
