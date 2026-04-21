@@ -1,20 +1,16 @@
 - name: Create VM from template
-  hosts: localhost
+  hosts: all
   gather_facts: no
-
-  collections:
-     - community.vmware
-
   tasks:
     - name: Clone VM from template
       community.vmware.vmware_guest:
         name: kerem-test-vm
         template: kerem   
-
         datacenter: Konsalt-MESA
-        datastore: Datastore01
-
+        datastore: EMC_VNX5700_LUN2
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'   
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         networks:
           - network: "VM Network"
-
         state: poweredon
