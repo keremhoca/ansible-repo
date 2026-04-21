@@ -1,0 +1,20 @@
+- name: Create VM from template
+  hosts: localhost
+  gather_facts: no
+
+  collections:
+    - vmware.vmware
+
+  tasks:
+    - name: Clone VM from template
+      vmware.vmware.vm:
+        name: kerem-test-vm
+        template: kerem   
+
+        datacenter: Konsalt-MESA
+        datastore: Datastore01
+
+        network_adapters:
+          - network: "VM Network"
+
+        state: powered_on
