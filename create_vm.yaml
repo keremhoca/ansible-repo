@@ -17,4 +17,4 @@
         network_adapters:
           - network: "VM Network"
 
-        state: powered_on
+        state: poweredon
