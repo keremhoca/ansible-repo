@@ -12,6 +12,7 @@
         template: kerem   
         datacenter: Konsalt-MESA
         datastore: EMC_VNX5700_LUN2
+        folder: Ansible
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'   
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
