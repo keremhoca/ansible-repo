@@ -1,20 +1,18 @@
 ---
-- name: Deploy RHEL 9 VM from template
+- name: Create VM from template
   hosts: localhost
   connection: local
   gather_facts: false
 
   vars:
-    vcenter_hostname: "VCENTER_IP_VEYA_FQDN"
-    vcenter_username: "administrator@vsphere.local"
-    vcenter_password: "VCENTER_SIFRE"
+    ansible_python_interpreter: /usr/bin/python3.9
 
     datacenter: "Konsalt-MESA"
     datastore: "EMC_VNX5700_LUN2"
     template: "rhel-9-latest"
     folder: "Ansible"
 
-    vm_name: "rhel9-ansible-01"
+    vm_name: "vm-test1"
 
     network_name: "VM Network"
     vm_ip: "192.168.90.57"
@@ -25,11 +23,11 @@
       - "8.8.8.8"
 
   tasks:
-    - name: Clone RHEL 9 VM from template
+    - name: Clone VM from template
       community.vmware.vmware_guest:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: false
 
         name: "{{ vm_name }}"
