@@ -5,7 +5,7 @@
   gather_facts: false
 
   vars:
-    ansible_python_interpreter: /usr/bin/python3.9
+    ansible_python_interpreter: /usr/bin/python3
 
     datacenter: "Konsalt-MESA"
     datastore: "EMC_VNX5700_LUN2"
