@@ -1,27 +1,48 @@
-- name: Create VM from template
-  hosts: all
+---
+- name: Deploy RHEL 9 VM from template
+  hosts: localhost
+  connection: local
+  gather_facts: false
 
   vars:
-     ansible_python_interpreter: /usr/bin/python3.9
+    vcenter_hostname: "VCENTER_IP_VEYA_FQDN"
+    vcenter_username: "administrator@vsphere.local"
+    vcenter_password: "VCENTER_SIFRE"
 
-  gather_facts: no
+    datacenter: "Konsalt-MESA"
+    datastore: "EMC_VNX5700_LUN2"
+    template: "rhel-9-latest"
+    folder: "Ansible"
+
+    vm_name: "rhel9-ansible-01"
+
+    network_name: "VM Network"
+    vm_ip: "192.168.90.57"
+    netmask: "255.255.0.0"
+    gateway: "192.168.0.1"
+
+    dns_servers:
+      - "8.8.8.8"
+
   tasks:
-    - name: Clone VM from template
+    - name: Clone RHEL 9 VM from template
       community.vmware.vmware_guest:
-        name: kerem-test-vm
-        template: kerem   
-        datacenter: Konsalt-MESA
-        datastore: EMC_VNX5700_LUN2
-        folder: Ansible
-        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-        username: '{{ lookup("env", "VMWARE_USER") }}'   
-        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: false
+
+        name: "{{ vm_name }}"
+        template: "{{ template }}"
+        datacenter: "{{ datacenter }}"
+        datastore: "{{ datastore }}"
+        folder: "{{ folder }}"
+
         networks:
-        - name: VM Network
-          ip: 192.168.0.99
-          netmask: 255.255.0.0
-          gateway: 192.168.0.1
-          dns_servers:
-            - 8.8.8.8
-            
+          - name: "{{ network_name }}"
+            ip: "{{ vm_ip }}"
+            netmask: "{{ netmask }}"
+            gateway: "{{ gateway }}"
+            dns_servers: "{{ dns_servers }}"
+
         state: poweredon
