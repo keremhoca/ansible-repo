@@ -1,0 +1,86 @@
+```yaml
+---
+- name: Create AAP 2.4 VMs from template
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+    # vCenter infrastructure
+    datacenter: "Konsalt-MESA"
+    datastore: "EMC_VNX5700_LUN2"
+    template: "rhel-9-latest"
+    folder: "Ansible"
+
+    # Network
+    network_name: "VM Network"
+    netmask: "255.255.0.0"
+    gateway: "192.168.0.1"
+
+    dns_servers:
+      - "8.8.8.8"
+
+    # VM hardware
+    vm_cpu: 4
+    vm_memory_mb: 16384
+    vm_disk_gb: 40
+
+    # AAP 2.4 nodes
+    vms:
+      - name: "aap-controller01"
+        ip: "192.168.90.57"
+
+      - name: "aap-hub01"
+        ip: "192.168.90.58"
+
+      - name: "aap-eda01"
+        ip: "192.168.90.59"
+
+      - name: "aap-db01"
+        ip: "192.168.90.60"
+
+  tasks:
+
+    - name: Clone AAP VMs from RHEL template
+      community.vmware.vmware_guest:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        validate_certs: false
+
+        name: "{{ item.name }}"
+        template: "{{ template }}"
+        datacenter: "{{ datacenter }}"
+        datastore: "{{ datastore }}"
+        folder: "{{ folder }}"
+
+        hardware:
+          num_cpus: "{{ vm_cpu }}"
+          memory_mb: "{{ vm_memory_mb }}"
+
+        disk:
+          - size_gb: "{{ vm_disk_gb }}"
+            type: thin
+            datastore: "{{ datastore }}"
+
+        networks:
+          - name: "{{ network_name }}"
+            ip: "{{ item.ip }}"
+            netmask: "{{ netmask }}"
+            gateway: "{{ gateway }}"
+            dns_servers: "{{ dns_servers }}"
+
+        customization:
+          hostname: "{{ item.name }}"
+
+        state: poweredon
+
+        wait_for_ip_address: true
+        wait_for_ip_address_timeout: 600
+
+      loop: "{{ vms }}"
+      loop_control:
+        label: "{{ item.name }} - {{ item.ip }}"
+```
