@@ -30,16 +30,16 @@
     # AAP 2.4 nodes
     vms:
       - name: "aap-controller01"
-        ip: "192.168.90.57"
-
-      - name: "aap-hub01"
         ip: "192.168.90.58"
 
-      - name: "aap-eda01"
+      - name: "aap-hub01"
         ip: "192.168.90.59"
 
-      - name: "aap-db01"
+      - name: "aap-eda01"
         ip: "192.168.90.60"
+
+      - name: "aap-db01"
+        ip: "192.168.90.61"
 
   tasks:
 
