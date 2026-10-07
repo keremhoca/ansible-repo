@@ -1,4 +1,3 @@
-```yaml
 ---
 - name: Create AAP 2.4 VMs from template
   hosts: localhost
@@ -25,7 +24,6 @@
     # VM hardware
     vm_cpu: 4
     vm_memory_mb: 16384
-    vm_disk_gb: 40
 
     # AAP 2.4 nodes
     vms:
@@ -42,7 +40,6 @@
         ip: "192.168.90.61"
 
   tasks:
-
     - name: Clone AAP VMs from RHEL template
       community.vmware.vmware_guest:
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
@@ -60,11 +57,6 @@
           num_cpus: "{{ vm_cpu }}"
           memory_mb: "{{ vm_memory_mb }}"
 
-        disk:
-          - size_gb: "{{ vm_disk_gb }}"
-            type: thin
-            datastore: "{{ datastore }}"
-
         networks:
           - name: "{{ network_name }}"
             ip: "{{ item.ip }}"
@@ -76,11 +68,9 @@
           hostname: "{{ item.name }}"
 
         state: poweredon
-
         wait_for_ip_address: true
         wait_for_ip_address_timeout: 600
 
       loop: "{{ vms }}"
       loop_control:
         label: "{{ item.name }} - {{ item.ip }}"
-```
