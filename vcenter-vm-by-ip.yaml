@@ -1,0 +1,42 @@
+---
+- name: Find VM by IP address
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    target_ip: "192.168.9.61"
+
+  tasks:
+    - name: Get VM information from vCenter
+      community.vmware.vmware_vm_info:
+        hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+        username: "{{ lookup('env', 'VMWARE_USER') }}"
+        password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+        validate_certs: false
+      register: vm_info
+
+    - name: Find VM with target IP
+      ansible.builtin.set_fact:
+        matched_vms: >-
+          {{
+            vm_info.virtual_machines
+            | selectattr('ip_address', 'defined')
+            | selectattr('ip_address', 'equalto', target_ip)
+            | list
+          }}
+
+    - name: Show VM information
+      ansible.builtin.debug:
+        msg:
+          - "VM Name: {{ matched_vms[0].guest_name }}"
+          - "IP Address: {{ matched_vms[0].ip_address }}"
+          - "Power State: {{ matched_vms[0].power_state }}"
+          - "ESXi Host: {{ matched_vms[0].esxi_hostname }}"
+          - "Datacenter: {{ matched_vms[0].datacenter }}"
+      when: matched_vms | length > 0
+
+    - name: VM not found
+      ansible.builtin.debug:
+        msg: "No VM was found with IP address {{ target_ip }}"
+      when: matched_vms | length == 0
