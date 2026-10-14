@@ -23,6 +23,18 @@
         enabled: true
       when: chronyd_status.stdout != "active"
 
-    - name: Confirm remediation
+    - name: Verify chronyd status after remediation
+      ansible.builtin.command:
+        cmd: systemctl is-active chronyd
+      register: chronyd_final_status
+      changed_when: false
+      failed_when: false
+
+    - name: Show final chronyd state
       ansible.builtin.debug:
-        msg: "chronyd is ensured to be running on {{ inventory_hostname }}"
+        msg: "chronyd final state: {{ chronyd_final_status.stdout }}"
+
+    - name: Fail if chronyd is still not active
+      ansible.builtin.fail:
+        msg: "chronyd remediation failed. Current state: {{ chronyd_final_status.stdout }}"
+      when: chronyd_final_status.stdout != "active"
