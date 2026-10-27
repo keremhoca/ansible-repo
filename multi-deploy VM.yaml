@@ -27,17 +27,20 @@
 
     # AAP 2.4 nodes
     vms:
-      - name: "aap-controller01"
-        ip: "192.168.90.58"
+     # - name: "aap-controller01"
+      #  ip: "192.168.90.58"
 
-      - name: "aap-hub01"
-        ip: "192.168.90.59"
+     # - name: "aap-hub01"
+      #  ip: "192.168.90.59"
 
-      - name: "aap-eda01"
-        ip: "192.168.90.60"
+     # - name: "aap-eda01"
+      #  ip: "192.168.90.60"
 
-      - name: "aap-db01"
-        ip: "192.168.90.61"
+     # - name: "aap-db01"
+      #  ip: "192.168.90.61"
+
+       - name: "aap-gateway"
+         ip: "192.168.90.62"
 
   tasks:
     - name: Clone AAP VMs from RHEL template
