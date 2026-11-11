@@ -9,6 +9,7 @@
 
     # vCenter infrastructure
     datacenter: "Konsalt-MESA"
+    cluster: "Konsalt"
     datastore: "EMC_VNX5700_LUN2"
     template: "rhel-9-latest"
     folder: "Ansible"
@@ -53,6 +54,7 @@
         name: "{{ item.name }}"
         template: "{{ template }}"
         datacenter: "{{ datacenter }}"
+        cluster: "{{ cluster }}"
         datastore: "{{ datastore }}"
         folder: "{{ folder }}"
 
