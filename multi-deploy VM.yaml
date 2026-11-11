@@ -39,8 +39,8 @@
      # - name: "aap-db01"
       #  ip: "192.168.90.61"
 
-       - name: "aap-gateway"
-         ip: "192.168.90.62"
+       - name: "aap-eda"
+         ip: "192.168.90.60"
 
   tasks:
     - name: Clone AAP VMs from RHEL template
