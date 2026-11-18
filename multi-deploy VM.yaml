@@ -23,7 +23,7 @@
       - "8.8.8.8"
 
     # VM hardware
-    vm_cpu: 4
+    vm_cpu: 2
     vm_memory_mb: 16384
 
     # AAP 2.4 nodes
